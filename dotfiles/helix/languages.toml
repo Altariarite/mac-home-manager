@@ -10,7 +10,6 @@ formatter = { command = "nixfmt", args = ["-"] }
 
 [[language]]
 name = "haskell"
-language-servers = ["haskell-language-server"]
 auto-format = true
 
 [[language]]
