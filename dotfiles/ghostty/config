@@ -1,0 +1,9 @@
+theme = Havn Daggry
+font-size = 17
+
+keybind = super+j=goto_split:down
+keybind = super+k=goto_split:up
+keybind = super+l=goto_split:right
+keybind = super+h=goto_split:left
+keybind = super+r=reload_config
+macos-option-as-alt = true
