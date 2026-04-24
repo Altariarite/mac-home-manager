@@ -52,6 +52,7 @@
     # Version control
     jujutsu # `jj`
     jjui
+    jj-starship
     git
     gh
     delta # git-delta

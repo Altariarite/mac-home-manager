@@ -53,15 +53,13 @@
         error_symbol = "[❯](red)";
       };
 
-      # jj: show change/bookmark via custom command
+      # jj/git prompt via jj-starship. --id-length 4 for short change_id.
+      # Ancestor bookmarks (default depth 10) render as e.g. `main~3`.
       custom.jj = {
-        command = ''
-          jj log -r@ -T 'separate(" ", change_id.shortest(4), bookmarks)' --no-graph 2>/dev/null
-        '';
-        when = "jj root 2>/dev/null";
-        symbol = "jj ";
+        command = "jj-starship prompt --id-length 4 --no-jj-id --bookmarks-display-limit 1 --no-git-prefix";
+        when = "jj-starship detect";
+        format = "[$output]($style) ";
         style = "bold purple";
-        format = "[$symbol($output)]($style) ";
       };
     };
   };
