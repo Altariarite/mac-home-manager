@@ -64,6 +64,11 @@
               export PATH="$MIX_HOME/escripts:$PATH"
               export ERL_AFLAGS="-kernel shell_history enabled"
               export LANG="en_US.UTF-8"
+
+              # Preinstall hex/rebar so `mix deps.get` doesn't block on an
+              # interactive prompt in fresh shells.
+              mix local.hex --force --if-missing >/dev/null
+              mix local.rebar --force --if-missing >/dev/null
             '';
           };
         });
