@@ -56,7 +56,7 @@
       # jj/git prompt via jj-starship. --id-length 4 for short change_id.
       # Ancestor bookmarks (default depth 10) render as e.g. `main~3`.
       custom.jj = {
-        command = "jj-starship prompt --id-length 4 --no-jj-id --bookmarks-display-limit 1 --no-git-prefix";
+        command = "jj-starship prompt --id-length 4 --jj-symbol='󱗆 ' --bookmarks-display-limit 1 --no-git-prefix";
         when = "jj-starship detect";
         format = "[$output]($style) ";
         style = "bold purple";
