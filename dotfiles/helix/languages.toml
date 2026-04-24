@@ -14,15 +14,16 @@ auto-format = true
 
 [[language]]
 name = "elixir"
-language-servers = ["expert", "elixir-ls"]
+language-servers = ["dexter"]
 auto-format = true
 
 [[language]]
 name = "heex"
-language-servers = ["expert", "elixir-ls"]
+language-servers = ["dexter"]
 
 [language-server]
 biome = { command = "biome", args = ["lsp-proxy"] }
+dexter = { command = "dexter", args = ["lsp"] }
 
 [[language]]
 name = "javascript"

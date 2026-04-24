@@ -12,6 +12,34 @@
         pkgs = import nixpkgs { inherit system; };
         beam = pkgs.beam.packages.erlang_27;
         elixir = beam.elixir_1_18;
+
+        # Dexter LSP — prebuilt binaries from github.com/remoteoss/dexter
+        # No x86_64-darwin release is published upstream.
+        dexterVersion = "0.6.0";
+        dexterAssets = {
+          "aarch64-darwin" = { asset = "dexter_Darwin_arm64.tar.gz";  sha256 = "b3bdf0fc783e059abf7670b1162c7c9fdcc815cbeaab2899781272b6ee4585f6"; };
+          "aarch64-linux"  = { asset = "dexter_Linux_arm64.tar.gz";   sha256 = "c387f4dc14c4d6cf9c9fbd91c2ef16e0f2530c54617900635b11a4e1fe3cf2ae"; };
+          "x86_64-linux"   = { asset = "dexter_Linux_x86_64.tar.gz";  sha256 = "78582a890739937332decd00c0b8553512f1ad526f3c414fd6d654aaebb8a2e6"; };
+        };
+        dexterAsset = dexterAssets.${system} or null;
+        dexter = if dexterAsset == null then null else
+          pkgs.stdenv.mkDerivation {
+            pname = "dexter";
+            version = dexterVersion;
+            src = pkgs.fetchurl {
+              url = "https://github.com/remoteoss/dexter/releases/download/v${dexterVersion}/${dexterAsset.asset}";
+              sha256 = dexterAsset.sha256;
+            };
+            sourceRoot = ".";
+            dontBuild = true;
+            nativeBuildInputs = pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.autoPatchelfHook ];
+            buildInputs = [ pkgs.sqlite ];
+            installPhase = ''
+              mkdir -p $out/bin
+              install -m755 dexter_*/dexter $out/bin/dexter
+            '';
+            meta.mainProgram = "dexter";
+          };
       in {
         devShells.default = pkgs.mkShell {
           packages = [
@@ -19,11 +47,14 @@
             elixir
             pkgs.nodejs_22
             pkgs.pnpm
+            pkgs.shopify-cli
+            pkgs.sqlite
             pkgs.git
-          ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
-            pkgs.inotify-tools
-            pkgs.libnotify
-          ];
+          ] ++ pkgs.lib.optional (dexter != null) dexter
+            ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+              pkgs.inotify-tools
+              pkgs.libnotify
+            ];
 
           shellHook = ''
             # Project-local mix/hex caches so flakes don't fight over $HOME.
