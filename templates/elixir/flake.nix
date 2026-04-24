@@ -4,17 +4,28 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, rust-overlay }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ (import rust-overlay) ];
+        };
         beam = pkgs.beam.packages.erlang_27;
         elixir = beam.elixir_1_18;
 
+        rust = pkgs.rust-bin.stable.latest.default.override {
+          targets = [ "wasm32-unknown-unknown" ];
+          extensions = [ "rust-src" "rust-analyzer" ];
+        };
+
         # Dexter LSP — prebuilt binaries from github.com/remoteoss/dexter
-        # No x86_64-darwin release is published upstream.
         dexterVersion = "0.6.0";
         dexterAssets = {
           "aarch64-darwin" = { asset = "dexter_Darwin_arm64.tar.gz";  sha256 = "b3bdf0fc783e059abf7670b1162c7c9fdcc815cbeaab2899781272b6ee4585f6"; };
@@ -48,6 +59,8 @@
             pkgs.nodejs_22
             pkgs.pnpm
             pkgs.shopify-cli
+            rust
+            pkgs.binaryen
             pkgs.sqlite
             pkgs.git
           ] ++ pkgs.lib.optional (dexter != null) dexter
@@ -57,10 +70,11 @@
             ];
 
           shellHook = ''
-            # Project-local mix/hex caches so flakes don't fight over $HOME.
+            # Project-local mix/hex/cargo caches so flakes don't fight over $HOME.
             export MIX_HOME="$PWD/.nix/mix"
             export HEX_HOME="$PWD/.nix/hex"
-            export PATH="$MIX_HOME/escripts:$PATH"
+            export CARGO_HOME="$PWD/.nix/cargo"
+            export PATH="$MIX_HOME/escripts:$CARGO_HOME/bin:$PATH"
             export ERL_AFLAGS="-kernel shell_history enabled"
             export LANG="en_US.UTF-8"
           '';
