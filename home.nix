@@ -63,6 +63,7 @@
     coreutils
     wget
     tree-sitter
+    glow
 
     # Global language support
     nixfmt
@@ -70,6 +71,7 @@
 
     # AI
     claude-code
+    opencode
 
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
