@@ -1,5 +1,5 @@
-theme = Havn Daggry
-font-family = Hack Nerd Font Mono
+theme = Catppuccin Latte
+font-family = SF Mono
 font-size = 17
 
 keybind = super+j=goto_split:down

@@ -74,6 +74,7 @@
     nerd-fonts.iosevka
     nerd-fonts.geist-mono
     nerd-fonts.hack
+    nerd-fonts.commit-mono
 
     # AI
     claude-code
