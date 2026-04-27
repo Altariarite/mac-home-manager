@@ -69,6 +69,12 @@
     nixfmt
     taplo # toml
 
+    # Fonts (terminal experimentation)
+    nerd-fonts.fira-code
+    nerd-fonts.iosevka
+    nerd-fonts.geist-mono
+    nerd-fonts.hack
+
     # AI
     claude-code
     opencode

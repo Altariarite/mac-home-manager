@@ -1,4 +1,5 @@
 theme = Havn Daggry
+font-family = Hack Nerd Font Mono
 font-size = 17
 
 keybind = super+j=goto_split:down
