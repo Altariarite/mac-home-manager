@@ -13,6 +13,16 @@ name = "haskell"
 auto-format = true
 
 [[language]]
+name = "common-lisp"
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "clojure"
+language-servers = ["clojure-lsp"]
+indent = { tab-width = 2, unit = "  " }
+auto-format = true
+
+[[language]]
 name = "elixir"
 language-servers = ["dexter"]
 auto-format = true
@@ -24,6 +34,7 @@ language-servers = ["dexter"]
 [language-server]
 biome = { command = "biome", args = ["lsp-proxy"] }
 dexter = { command = "dexter", args = ["lsp"] }
+clojure-lsp = { command = "clojure-lsp" }
 
 [[language]]
 name = "javascript"

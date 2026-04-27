@@ -30,7 +30,9 @@
     enable = true;
     enableZshIntegration = true;
     nix-direnv.enable = true;
-    package = pkgs.direnv.overrideAttrs (old: { doCheck = false; });
+    package = pkgs.direnv.overrideAttrs (old: {
+      doCheck = false;
+    });
     config = {
       global = {
         hide_env_diff = true;
@@ -64,10 +66,21 @@
     wget
     tree-sitter
     glow
+    uv # Python project/tool manager (used for mempalace)
 
     # Global language support
     nixfmt
     taplo # toml
+
+    # Common Lisp (RTM/PG style: SBCL + readline-wrapped REPL)
+    sbcl
+    rlwrap
+
+    # Clojure (for working through *On Lisp* in a modern Lisp)
+    clojure # `clj` / `clojure` CLI + deps.edn
+    clojure-lsp
+    clj-kondo # static linter
+    babashka # fast-startup Clojure for scripts (`bb`)
 
     # Fonts (terminal experimentation)
     nerd-fonts.fira-code
@@ -126,6 +139,9 @@
   home.sessionVariables = {
     EDITOR = "hx";
   };
+
+  # Make uv-installed tool binaries (e.g. mempalace) discoverable on PATH.
+  home.sessionPath = [ "$HOME/.local/bin" ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

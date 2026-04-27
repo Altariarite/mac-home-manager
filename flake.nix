@@ -7,11 +7,13 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs =
+    { nixpkgs, home-manager, ... }:
     let
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    in
+    {
       homeConfigurations."altaria" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];
@@ -25,6 +27,10 @@
         haskell = {
           path = ./templates/haskell;
           description = "Haskell dev shell (GHC + Cabal + HLS + tooling)";
+        };
+        common-lisp = {
+          path = ./templates/common-lisp;
+          description = "Common Lisp dev shell (SBCL + Quicklisp + rlwrap)";
         };
       };
     };

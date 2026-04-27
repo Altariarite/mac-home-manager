@@ -1,10 +1,10 @@
 { ... }:
 
 {
-  # Auto-start zellij in new zsh sessions. Skips if already inside zellij.
+  # Install zellij but don't auto-attach — run `zellij` manually when wanted.
   programs.zellij = {
     enable = true;
-    enableZshIntegration = true;
+    enableZshIntegration = false;
   };
 
   # Zsh with fish-like UX: autosuggestions, syntax highlighting, history search.
