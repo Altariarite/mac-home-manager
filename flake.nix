@@ -5,10 +5,12 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    basecamp-cli.url = "github:basecamp/basecamp-cli";
+    basecamp-cli.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }:
+    { nixpkgs, home-manager, basecamp-cli, ... }:
     let
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -16,6 +18,9 @@
     {
       homeConfigurations."altaria" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = {
+          basecamp-cli = basecamp-cli.packages.${system}.default;
+        };
         modules = [ ./home.nix ];
       };
 

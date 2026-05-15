@@ -79,8 +79,8 @@
   # Map ~/.config/<tool>/... → dotfiles/<tool>/... in this repo.
   xdg.configFile = {
     "ghostty/config".source = ./dotfiles/ghostty/config;
-    "helix/config.toml".source = ./dotfiles/helix/config.toml;
-    "helix/languages.toml".source = ./dotfiles/helix/languages.toml;
+    # "helix/config.toml".source = ./dotfiles/helix/config.toml;
+    # "helix/languages.toml".source = ./dotfiles/helix/languages.toml;
     "zellij/config.kdl".source = ./dotfiles/zellij/config.kdl;
     "zellij/layouts" = {
       source = ./dotfiles/zellij/layouts;

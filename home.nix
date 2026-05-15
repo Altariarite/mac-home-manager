@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  basecamp-cli,
   ...
 }:
 
@@ -22,7 +23,109 @@
   # release notes.
   home.stateVersion = "23.05"; # Please read the comment before changing.
 
-  programs.helix.enable = true;
+  programs.helix = {
+    enable = true;
+    settings = {
+      theme = "modus_operandi";
+      editor = {
+        line-number = "relative";
+        cursorline = true;
+        color-modes = true;
+        true-color = true;
+        rulers = [ 80 ];
+
+        default-yank-register = "+";
+        auto-format = true;
+        end-of-line-diagnostics = "hint";
+        auto-save = {
+          focus-lost = true;
+          after-delay = {
+            enable = true;
+            timeout = 2000;
+          };
+        };
+        lsp = {
+          display-messages = true;
+          display-progress-messages = true;
+          display-inlay-hints = false;
+          auto-signature-help = true;
+        };
+        inline-diagnostics = {
+          cursor-line = "hint";
+          other-lines = "disable";
+        };
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "underline";
+        };
+        indent-guides.render = true;
+      };
+
+      keys.normal = {
+        esc = [
+          "collapse_selection"
+          "keep_primary_selection"
+        ];
+        space.w = ":w";
+        space.q = ":q";
+        "$" = "goto_line_end";
+        "0" = "goto_line_start";
+      };
+    };
+
+    # Editor-infrastructure language servers/formatters that should be available
+    # everywhere (even outside a project dev shell). Toolchain-coupled servers
+    # (rust-analyzer, expert, ruby-lsp) live in their project's dev shell instead.
+    extraPackages = with pkgs; [
+      nil # nix
+      nixfmt-rfc-style # nix formatter
+    ];
+
+    # auto-format is enabled globally via editor.auto-format above, so it's not
+    # repeated per language here.
+    languages = {
+      language-server = {
+        expert = { command = "expert"; };
+        rust-analyzer.config.check.command = "clippy";
+      };
+
+      language = [
+        {
+          name = "nix";
+          formatter = { command = "nixfmt"; args = [ "-" ]; };
+        }
+        {
+          name = "rust";
+          formatter = { command = "rustfmt"; };
+        }
+        {
+          name = "elixir";
+          language-servers = [ "expert" ];
+          formatter = { command = "mix"; args = [ "format" "-" ]; };
+        }
+        {
+          name = "ruby";
+          language-servers = [ "ruby-lsp" ];
+        }
+      ];
+    };
+  };
+
+  programs.tealdeer = {
+    enable = true;
+    enableAutoUpdates = true;
+    settings = {
+      display = {
+        compact = false;
+        use_pager = true;
+      };
+      updates = {
+        auto_update = false;
+        auto_update_interval_hours = 720;
+      };
+    };
+  };
 
   # Load nix dev shells into current zsh instead of spawning a subshell.
   # Use `echo "use flake" > .envrc && direnv allow` in a project with a flake.
@@ -82,6 +185,9 @@
     clj-kondo # static linter
     babashka # fast-startup Clojure for scripts (`bb`)
 
+    # Nix
+    nil
+
     # Fonts (terminal experimentation)
     nerd-fonts.fira-code
     nerd-fonts.iosevka
@@ -92,6 +198,14 @@
     # AI
     claude-code
     opencode
+    # basecamp-cli upstream requires go 1.26.4; nixpkgs currently ships 1.26.3.
+    # Patch the go.mod directive down so the build succeeds with what we have.
+    (basecamp-cli.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace go.mod --replace-fail "go 1.26.4" "go 1.26.3"
+      '';
+      vendorHash = "sha256-j48iZ53SRswAi+Gd4U1fQ9flZ0blPZnuqU0U5vCELOg=";
+    }))
 
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
