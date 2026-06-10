@@ -1,0 +1,22 @@
+format = "$directory$custom$nix_shell\n$character"
+
+[directory]
+truncation_length = 0
+truncate_to_repo = false
+fish_style_pwd_dir_length = 0
+style = "bold cyan"
+
+[nix_shell]
+format = "via [$symbol$state]($style) "
+symbol = "nix "
+style = "bold blue"
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+
+[custom.jj]
+command = "jj-starship prompt --id-length 4 --jj-symbol='󱗆 ' --bookmarks-display-limit 1 --no-git-prefix"
+when = "jj-starship detect"
+format = "[$output]($style) "
+style = "bold purple"

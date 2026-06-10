@@ -1,0 +1,23 @@
+[language-server.expert]
+command = "expert"
+args = ["--stdio"]
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+[[language]]
+name = "nix"
+formatter = { command = "nixfmt", args = ["-"] }
+
+[[language]]
+name = "rust"
+formatter = { command = "rustfmt" }
+
+[[language]]
+name = "elixir"
+language-servers = ["expert"]
+formatter = { command = "mix", args = ["format", "-"] }
+
+[[language]]
+name = "ruby"
+language-servers = ["ruby-lsp"]

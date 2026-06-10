@@ -1,6 +1,0 @@
-.direnv/
-.nix/
-dist-newstyle/
-dist/
-*.hi
-*.o
