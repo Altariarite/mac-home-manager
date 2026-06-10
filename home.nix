@@ -86,7 +86,7 @@
     # repeated per language here.
     languages = {
       language-server = {
-        expert = { command = "expert"; };
+        expert = { command = "expert"; args = [ "--stdio" ]; };
         rust-analyzer.config.check.command = "clippy";
       };
 
