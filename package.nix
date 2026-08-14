@@ -3,12 +3,13 @@ let
   pkgs = import sources.nixpkgs { };
 in
 
-pkgs.buildEnv {
-  name = "altaria-user-packages";
-  paths = with pkgs; [
+with pkgs; [
     # Dotfile management
     stow
     npins
+
+    # Nix command documentation
+    nix.man
 
     # Shells and shell integrations
     zsh
@@ -43,6 +44,11 @@ pkgs.buildEnv {
     tree-sitter
     glow
     uv
+    ffmpeg
+    zola
+
+    # macOS applications
+    xld
 
     # Global language support
     nixfmt
@@ -65,6 +71,6 @@ pkgs.buildEnv {
     nerd-fonts.commit-mono
 
     # AI
+    codex
     opencode
-  ];
-}
+]
