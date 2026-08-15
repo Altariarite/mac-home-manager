@@ -3,7 +3,7 @@ export GEM_HOME="$HOME/.gem"
 export PATH="$GEM_HOME/bin:$PATH"
 
 alias jj-sync='jj git fetch && jj rebase -d main'
-alias nix-rebuild='nix-env -f "$HOME/.config/nix/package.nix" -ir'
+alias nix-rebuild='"$HOME/.config/nix/rebuild.sh"'
 alias ze='zellij'
 
 if [ -r "$HOME/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then

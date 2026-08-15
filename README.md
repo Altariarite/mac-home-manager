@@ -1,13 +1,14 @@
 # macOS Nix Packages and Stow Dotfiles
 
-This repo uses Nix only for installing packages. Dotfiles are regular files
-managed with GNU Stow.
+This repo uses Nix for installing packages and GNU Stow for linking dotfiles.
 
-Install or update the package bundle:
+Update the package bundle and all dotfiles together:
 
 ```sh
-nix-env -f "$HOME/.config/nix/package.nix" -ir
+./rebuild.sh
 ```
+
+The `nix-rebuild` shell alias runs the same script.
 
 Preview the package switch:
 
@@ -47,7 +48,7 @@ The final `package.nix` imports `nixpkgs` from `./npins` instead of from
 npins update nixpkgs
 ```
 
-Link dotfiles into `$HOME`:
+Link dotfiles into `$HOME` without rebuilding the package bundle:
 
 ```sh
 cd ~/.config/nix
